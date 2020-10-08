@@ -60,7 +60,6 @@
 			ul {
 				li {
 					padding: 15px 20px;
-					list-style-type: none;
 					&:hover {
 						background: $primary-light;
 					}
