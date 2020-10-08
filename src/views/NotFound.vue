@@ -1,6 +1,6 @@
 <template>
 	<main class="not-found-page">
-		<!-- <Header /> -->
+		<Header />
 		<div class="container">
 			<div class="row">
 				<div class="col-12 d-flex flex-column align-items-center">
@@ -21,6 +21,9 @@
 			goBack() {
 				this.$router.go(-1)
 			}
+		},
+		components: {
+			Header: () => import('@/components/main/Header')
 		}
 	}
 </script>

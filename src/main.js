@@ -8,9 +8,13 @@ import './assets/scss/main.scss'
 
 /* Include global componens */
 import DefaultButton from '@/components/items/DefaultButton'
+import TextInput from '@/components/items/TextInput'
+import SelectInput from '@/components/items/SelectInput'
 
 /* Register global components */
 Vue.component('DefaultButton', DefaultButton)
+Vue.component('TextInput', TextInput)
+Vue.component('SelectInput', SelectInput)
 
 Vue.config.productionTip = false
 

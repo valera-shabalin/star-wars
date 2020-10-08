@@ -40,7 +40,6 @@
 			}
 		}
 	}
-
 	.button_white {
 		border: 1px solid #fff;
 		color: #fff;
