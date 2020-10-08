@@ -6,26 +6,8 @@
 		</div>
 		<div class="card-list__list">
 			<div class="row">
-				<div class="col-12 col-sm-6 col-lg-3">
-					<Card />
-				</div>
-				<div class="col-12 col-sm-6 col-lg-3">
-					<Card />
-				</div>
-				<div class="col-12 col-sm-6 col-lg-3">
-					<Card />
-				</div>
-				<div class="col-12 col-sm-6 col-lg-3">
-					<Card />
-				</div>
-				<div class="col-12 col-sm-6 col-lg-3">
-					<Card />
-				</div>
-				<div class="col-12 col-sm-6 col-lg-3">
-					<Card />
-				</div>
-				<div class="col-12 col-sm-6 col-lg-3">
-					<Card />
+				<div v-for="(person, index) of persons" class="col-12 col-sm-6 col-lg-3" :key="index">
+					<Card :person="person" :index="index" />
 				</div>
 			</div>
 		</div>
@@ -35,6 +17,9 @@
 <script>
 	export default {
 		name: 'CardList',
+		props: {
+			persons: { type: Array, default: null }
+		},
 		data: () => ({
 			searchName: '',
 			gender: ''

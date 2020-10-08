@@ -1,30 +1,31 @@
 <template>
 	<div class="card">
 		<div class="card__photo">
-			<img src="@/assets/img/1.jpg" alt="Luke Skywalker">
+			<img :src="`https://starwars-visualguide.com/assets/img/characters/${index + 1}.jpg`" :alt="person.name">
 		</div>
-		<h3>Luke Skywalker</h3>
+		<h3>{{ person.name }}</h3>
 		<hr>
 		<ul>
 			<li>
 				<span class="title">Рост: </span>
-				<span>172cm</span>
+				<span>{{ person.height }}</span>
 			</li>
 			<li>
 				<span class="title">Вес: </span>
-				<span>77 kg</span>
+				<span>{{ person.mass }}</span>
 			</li>
 			<li>
 				<span class="title">Пол: </span>
-				<span>male</span>
+				<span>{{ person.gender }}</span>
 			</li>
 			<li>
 				<span class="title">Родная планета: </span>
-				<span>Tatooine</span>
+				<span v-if="planet.length > 0">{{ planet }}</span>
+				<span v-else>-</span>
 			</li>
 			<li>
 				<span class="title">Дата рождения: </span>
-				<span>19BBY</span>
+				<span>{{ person.birth_year }}</span>
 			</li>
 		</ul>
 		<svg width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="button-like">
@@ -35,14 +36,31 @@
 </template>
 
 <script>
+	import axios from 'axios'
+
 	export default {
-		name: 'Card'
+		name: 'Card',
+		data: () => ({
+			planet: ''
+		}),
+		props: {
+			person: Object,
+			index: Number
+		},
+		mounted() {
+			if (this.person.homeworld) {
+				axios.get(this.person.homeworld)
+				.then(resp => {
+					this.planet = resp.data.name
+				})
+			}
+		}
 	}
 </script>
 
 <style lang="scss">
 	.card {
-		padding: 30px;
+		padding: 30px 15px;
 		margin-bottom: 20px;
 		display: flex;
 		flex-direction: column;
@@ -74,6 +92,7 @@
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+			font-size: 14px;
 			li {
 				margin: 3px 0;
 				.title {
@@ -88,6 +107,12 @@
 			&:hover {
 				stroke: $red;
 				fill: $red;
+			}
+		}
+		&:hover {
+			border: 1px solid $primary;
+			.card__photo {
+				border: 2px solid $primary;
 			}
 		}
 	}
