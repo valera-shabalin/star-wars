@@ -6,7 +6,7 @@
 				<div class="row">
 					<div class="col-12">
 						<h2>Персонажи вселенной Star Wars</h2>
-						<CardList />
+						<CardList :persons="persons" />
 					</div>
 				</div>
 			</div>
@@ -17,6 +17,12 @@
 <script>
 	export default {
 		name: 'Favorites',
+		data: () => ({
+			persons: []
+		}),
+		created() {
+			
+		},
 		components: {
 			Header: () => import('@/components/main/Header'),
 			CardList: () => import('@/components/main/CardList')

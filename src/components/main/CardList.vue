@@ -2,16 +2,21 @@
 	<div class="card-list">
 		<div class="card-list__filter">
 			<TextInput v-model.trim="searchName" :placeholder="'Введите имя персонажа'" />
-			<SelectInput :placeholder="'Выберите пол'" :options="['Мужской', 'Женский']" @change="changeGender" />
+			<SelectInput :placeholder="'Выберите пол'" :options="genders" @change="changeGender" />
 		</div>
 		<div class="card-list__list">
-			<div class="row">
+			<div class="row" v-if="filteredList.length > 0">
 				<div v-for="(person, index) of filteredList" class="col-12 col-sm-6" :key="index">
 					<Card :person="person" :index="index" />
 				</div>
 			</div>
+			<div class="row" v-else>
+				<div class="col-12">
+					<h3>Нет персонажей</h3>
+				</div>
+			</div>
 		</div>
-		<div class="card-list__pagination">
+		<div class="card-list__pagination" v-if="filteredList.length > 0">
 			<Pagination @change="changePage" />
 		</div>
 	</div>
@@ -25,18 +30,26 @@
 		},
 		data: () => ({
 			searchName: '',
-			gender: ''
+			genders: [
+				{ code: 'male', title: 'Мужской' },
+				{ code: 'female', title: 'Женский' },
+				{ code: 'n/a', title: 'Нет пола' },
+				{ code: 'none', title: 'Не выбрано' }
+			],
+			selectGender: 'none'
 		}),
 		computed: {
 			filteredList() {
 				return this.persons.filter(item => {
-					const name = item.name.toLocaleLowerCase()
-					return name.includes(this.searchName)
+					let flag = true
+					if (this.selectGender!= 'none' && item.gender != this.selectGender) flag = false
+					if (!item.name.toLocaleLowerCase().includes(this.searchName)) flag = false
+					return flag
 				})
 			}
 		},
 		methods: {
-			changeGender(option) { this.gender = option },
+			changeGender(option) { this.selectGender = option },
 			changePage(currentPage) { this.$emit('change', currentPage) }
 		},
 		components: {

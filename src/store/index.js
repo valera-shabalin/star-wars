@@ -7,11 +7,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 	state: {
 		persons: [],
+		favorites: [],
 		count: 0
 	},
 	mutations: {
 		SET_PERSONS: (state, persons) => { state.persons = persons },
-		SET_COUNT: (state, count) => { state.count = count }
+		SET_COUNT: (state, count) => { state.count = count },
 	},
 	actions: {
 		FETCH_PERSONS: ({ commit }, { url }) => {
@@ -28,6 +29,7 @@ export default new Vuex.Store({
 	},
 	getters: {
 		PERSONS: (state) => { return state.persons },
+		FAVORITES: (state) => { return state.favorites },
 		COUNT: (state) => { return state.count }
 	}
 })

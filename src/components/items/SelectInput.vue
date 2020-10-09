@@ -10,7 +10,7 @@
 			</div>
 			<div class="select-input__drop" v-if="isShow">
 				<ul>
-					<li v-for="(option, i) of options" :key="i" @click="changeOption(option)">{{ option }}</li>
+					<li v-for="(option, i) of options" :key="i" @click="changeOption(option)">{{ option.title }}</li>
 				</ul>
 			</div>
 		</div>
@@ -30,9 +30,9 @@
 		}),
 		methods: {
 			changeOption(option) {
-				this.selected = option
+				this.selected = option.title
 				this.isShow = false
-				this.$emit('change', option)
+				this.$emit('change', option.code)
 			}
 		}
 	}
