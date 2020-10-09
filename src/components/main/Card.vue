@@ -42,7 +42,7 @@
 		name: 'Card',
 		data: () => ({
 			planet: '',
-			uid: 0
+			uid: 1
 		}),
 		props: {
 			person: Object,

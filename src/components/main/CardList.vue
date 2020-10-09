@@ -30,7 +30,8 @@
 		computed: {
 			filteredList() {
 				return this.persons.filter(item => {
-					return item.name.includes(this.searchName)
+					const name = item.name.toLocaleLowerCase()
+					return name.includes(this.searchName)
 				})
 			}
 		},

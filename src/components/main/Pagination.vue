@@ -4,7 +4,7 @@
 		<div class="pagination__list">
 			<DefaultButton 
 				:mode="'grey'" 
-				v-for="index of countPage" 
+				v-for="index of pages" 
 				:key="index" 
 				:class="{ 'active': currentPage == index }"
 				@click="changePage(index)">{{ index }}</DefaultButton>
@@ -21,15 +21,32 @@
 		name: 'Pagination',
 		data: () => ({
 			currentPage: 1,
-			count: 0
+			pageRange: 1
 		}),
-		mounted() {
-			this.count = this.$store.getters.COUNT
-		},
 		computed: {
+			count: {
+				get() {
+					return this.$store.getters.COUNT
+				}
+			},
+			pages: function() {
+				let pages = []
+				for (let i = this.rangeStart; i <= this.rangeEnd; i++) {
+					pages.push(i)
+				}
+				return pages
+			},
 			countPage: function() {
 				return Math.ceil(this.count / 10)
-			}
+			},
+			rangeStart: function() {
+				let start = this.currentPage - this.pageRange
+				return (start > 0) ? start : 1
+			},
+			rangeEnd: function() {
+				let end = this.currentPage + this.pageRange
+				return (end < this.countPage) ? end : this.countPage
+			},
 		},
 		methods: {
 			nextPage() {

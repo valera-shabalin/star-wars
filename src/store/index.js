@@ -19,8 +19,7 @@ export default new Vuex.Store({
 				axios.get(url)
 				.then(resp => {
 					if (resp.status == 200) {
-						console.log(resp)
-						commit('SET_COUNT', resp.data.count)
+						commit('SET_COUNT', parseInt(resp.data.count))
 						resolve(resp.data.results)
 					}
 				})
