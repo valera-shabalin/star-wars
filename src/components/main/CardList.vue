@@ -6,10 +6,13 @@
 		</div>
 		<div class="card-list__list">
 			<div class="row">
-				<div v-for="(person, index) of persons" class="col-12 col-sm-6 col-lg-3" :key="index">
+				<div v-for="(person, index) of filteredList" class="col-12 col-sm-6" :key="index">
 					<Card :person="person" :index="index" />
 				</div>
 			</div>
+		</div>
+		<div class="card-list__pagination">
+			<Pagination @change="changePage" />
 		</div>
 	</div>
 </template>
@@ -24,11 +27,20 @@
 			searchName: '',
 			gender: ''
 		}),
+		computed: {
+			filteredList() {
+				return this.persons.filter(item => {
+					return item.name.includes(this.searchName)
+				})
+			}
+		},
 		methods: {
-			changeGender(option) { this.gender = option }
+			changeGender(option) { this.gender = option },
+			changePage(currentPage) { this.$emit('change', currentPage) }
 		},
 		components: {
-			Card: () => import('@/components/main/Card')
+			Card: () => import('@/components/main/Card'),
+			Pagination: () => import('@/components/main/Pagination')
 		}
 	}
 </script>
@@ -38,14 +50,19 @@
 		&__filter {
 			display: flex;
 			.text-input {
-				margin-right: 15px;
+				margin-right: 30px;
 				flex-basis: 320px;
+				flex-grow: 1;
 			}
 			.select-input {
 				flex-basis: 320px;
+				flex-grow: 1;
 			}
 		}
 		&__list {
+			margin-top: 20px;
+		}
+		&__pagination {
 			margin-top: 20px;
 		}
 	}

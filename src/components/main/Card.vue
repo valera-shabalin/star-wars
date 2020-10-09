@@ -1,7 +1,7 @@
 <template>
 	<div class="card">
 		<div class="card__photo">
-			<img :src="`https://starwars-visualguide.com/assets/img/characters/${index + 1}.jpg`" :alt="person.name">
+			<img :src="`https://starwars-visualguide.com/assets/img/characters/${uid}.jpg`" :alt="person.name">
 		</div>
 		<h3>{{ person.name }}</h3>
 		<hr>
@@ -41,7 +41,8 @@
 	export default {
 		name: 'Card',
 		data: () => ({
-			planet: ''
+			planet: '',
+			uid: 0
 		}),
 		props: {
 			person: Object,
@@ -54,6 +55,10 @@
 					this.planet = resp.data.name
 				})
 			}
+		},
+		updated() {
+			let path = this.person.url.split('/')
+			this.uid = path[path.length - 2]
 		}
 	}
 </script>
@@ -72,6 +77,7 @@
 			width: 110px;
 			border: 2px solid $secondary;
 			border-radius: 50%;
+			background: $secondary;
 			overflow: hidden;
 			img {
 				max-width: 100%;

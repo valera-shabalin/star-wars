@@ -1,5 +1,5 @@
 <template>
-	<a :href="link" class="button button_white" @click.prevent="$emit('click')">
+	<a :href="link" class="button" :class="mode" @click.prevent="$emit('click')">
 		<span><slot></slot></span>
 	</a>
 </template>
@@ -8,7 +8,8 @@
 	export default {
 		name: 'DefaultButton',
 		props: {
-			link: String
+			link: { type: String, default: '#' },
+			mode: { type: String, default: '' }
 		}
 	}
 </script>
@@ -19,6 +20,7 @@
 		padding: 15px 35px;
 		text-decoration: none;
 		transition: color ease .2s .3s;
+		cursor: pointer;
 		span {
 			position: relative;
 		}
@@ -34,17 +36,47 @@
 			transition: transform ease-in .4s;
 		}
 		&:hover  {
+			&:before {
+				transform: scaleY(1);
+			}
+		}
+		&.disable {
+			color: $grey;
+			&:hover {
+				border: 1px solid $grey-light;
+				color: $grey;
+			}
+			&:before {
+				display: none;
+			}
+		}
+		&.active {
 			color: $secondary;
+			border: 1px solid $primary;
 			&:before {
 				transform: scaleY(1);
 			}
 		}
 	}
-	.button_white {
+	.white {
 		border: 1px solid #fff;
 		color: #fff;
+		&:hover {
+			color: $secondary-dark;
+		}
 		&:before {
 			background: #fff;
+		}
+	}
+	.grey {
+		border: 1px solid $grey-light;
+		color: $grey-dark;
+		&:hover {
+			color: $secondary-dark;
+			border: 1px solid $primary;
+		}
+		&:before {
+			background: $primary;
 		}
 	}
 </style>

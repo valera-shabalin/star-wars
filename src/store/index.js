@@ -6,18 +6,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
-		persons: []
+		persons: [],
+		count: 0
 	},
 	mutations: {
-		SET_PERSONS: (state, persons) => { state.persons = persons }
+		SET_PERSONS: (state, persons) => { state.persons = persons },
+		SET_COUNT: (state, count) => { state.count = count }
 	},
 	actions: {
-		FETCH_PERSONS: ({ commit }) => {
+		FETCH_PERSONS: ({ commit }, { url }) => {
 			return new Promise((resolve, reject) => {
-				axios.get('https://swapi.dev/api/people/')
+				axios.get(url)
 				.then(resp => {
 					if (resp.status == 200) {
 						console.log(resp)
+						commit('SET_COUNT', resp.data.count)
 						resolve(resp.data.results)
 					}
 				})
@@ -25,6 +28,7 @@ export default new Vuex.Store({
 		}
 	},
 	getters: {
-		PERSONS: (state) => { return state.persons }
+		PERSONS: (state) => { return state.persons },
+		COUNT: (state) => { return state.count }
 	}
 })

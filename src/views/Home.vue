@@ -16,7 +16,7 @@
 				<div class="row">
 					<div class="col-12">
 						<h2>Персонажи вселенной Star Wars</h2>
-						<CardList :persons="persons" />
+						<CardList :persons="persons" @change="changePage" />
 					</div>
 				</div>
 			</div>
@@ -31,10 +31,20 @@
 			persons: []
 		}),
 		mounted() {
-			this.$store.dispatch('FETCH_PERSONS')
-			.then(response => {
-				this.persons = response
+			const url = 'http://swapi.dev/api/people/?page=1'
+			this.$store.dispatch('FETCH_PERSONS', { url })
+			.then(resp => {
+				this.persons = resp
 			})
+		},
+		methods: {
+			changePage(currentPage) { 
+				const url = 'http://swapi.dev/api/people/?page=' + currentPage
+				this.$store.dispatch('FETCH_PERSONS', { url })
+				.then(resp => {
+					this.persons = resp
+				})
+			}
 		},
 		components: {
 			Header: () => import('@/components/main/Header'),

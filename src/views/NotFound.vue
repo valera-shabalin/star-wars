@@ -7,7 +7,7 @@
 					<span class="status">404</span>
 					<div class="light-line"></div>
 					<h1>Страница не найдена!</h1>
-					<DefaultButton :link="'#'" @click="goBack">Вернуться назад</DefaultButton>
+					<DefaultButton :mode="'white'" @click="goBack">Вернуться назад</DefaultButton>
 				</div>
 			</div>
 		</div>
