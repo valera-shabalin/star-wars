@@ -1,7 +1,7 @@
 <template>
 	<div class="card">
 		<div class="card__photo">
-			<img :src="`https://starwars-visualguide.com/assets/img/characters/${uid}.jpg`" :alt="person.name">
+			<img :src="`https://starwars-visualguide.com/assets/img/characters/${uid}.jpg`" :alt="person.name" v-if="uid">
 		</div>
 		<h3>{{ person.name }}</h3>
 		<hr>
@@ -20,7 +20,7 @@
 			</li>
 			<li>
 				<span class="title">Родная планета: </span>
-				<span v-if="planet.length > 0">{{ planet }}</span>
+				<span v-if="homeworld.length > 0">{{ homeworld }}</span>
 				<span v-else>-</span>
 			</li>
 			<li>
@@ -28,7 +28,7 @@
 				<span>{{ person.birth_year }}</span>
 			</li>
 		</ul>
-		<svg width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="button-like">
+		<svg width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="button-like" @click="switchFavorite">
 			<path d="M18.6789 1.6875C14.875 1.6875 13 5.4375 13 5.4375C13 5.4375 11.125 1.6875 7.3211 1.6875C4.22969 1.6875 1.78164 4.27383 1.75 7.35996C1.68555 13.766 6.83184 18.3217 12.4727 22.1502C12.6282 22.256 12.8119 22.3126 13 22.3126C13.1881 22.3126 13.3718 22.256 13.5273 22.1502C19.1676 18.3217 24.3139 13.766 24.25 7.35996C24.2184 4.27383 21.7703 1.6875 18.6789 1.6875V1.6875Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 		</svg>
 	</div>
@@ -40,25 +40,30 @@
 	export default {
 		name: 'Card',
 		data: () => ({
-			planet: '',
+			homeworld: '',
 			favorite: false,
-			uid: 1
+			uid: null
 		}),
 		props: {
 			person: Object,
 			index: Number
 		},
 		mounted() {
-			if (this.person.homeworld) {
-				axios.get(this.person.homeworld)
+			axios.get(this.person.homeworld)
 				.then(resp => {
-					this.planet = resp.data.name
+					this.homeworld = resp.data.name
 				})
-			}
+				.catch(() => {})
 		},
 		updated() {
-			let path = this.person.url.split('/')
+			const path = this.person.url.split('/')
 			this.uid = path[path.length - 2]
+		},
+		methods: {
+			switchFavorite() {
+				const person = this.person
+				this.$store.dispatch('ADD_CARD', person)
+			}
 		}
 	}
 </script>

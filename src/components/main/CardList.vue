@@ -16,8 +16,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="card-list__pagination" v-if="filteredList.length > 0">
-			<Pagination @change="changePage" />
+		<div class="card-list__pagination" v-if="pagination.count > 10">
+			<Pagination :options="pagination" @change="changePage" />
 		</div>
 	</div>
 </template>
@@ -26,17 +26,18 @@
 	export default {
 		name: 'CardList',
 		props: {
-			persons: { type: Array, default: null }
+			persons: { type: Array, default: [] },
+			pagination: Object
 		},
 		data: () => ({
 			searchName: '',
+			selectGender: 'none',
 			genders: [
 				{ code: 'male', title: 'Мужской' },
 				{ code: 'female', title: 'Женский' },
 				{ code: 'n/a', title: 'Нет пола' },
 				{ code: 'none', title: 'Не выбрано' }
-			],
-			selectGender: 'none'
+			]
 		}),
 		computed: {
 			filteredList() {

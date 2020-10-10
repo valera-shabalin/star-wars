@@ -4,10 +4,10 @@
 		<div class="pagination__list">
 			<DefaultButton 
 				:mode="'grey'" 
-				v-for="index of pages" 
-				:key="index" 
-				:class="{ 'active': currentPage == index }"
-				@click="changePage(index)">{{ index }}</DefaultButton>
+				v-for="page of pages" 
+				:key="page" 
+				:class="{ 'active': currentPage == page }"
+				@click="changePage(page)">{{ page }}</DefaultButton>
 		</div>
 		<DefaultButton 
 			:mode="'grey'" 
@@ -19,25 +19,21 @@
 <script>
 	export default {
 		name: 'Pagination',
+		props: {
+			options: Object
+		},
 		data: () => ({
 			currentPage: 1,
 			pageRange: 1
 		}),
 		computed: {
-			count: {
-				get() {
-					return this.$store.getters.COUNT
-				}
-			},
 			pages: function() {
 				let pages = []
-				for (let i = this.rangeStart; i <= this.rangeEnd; i++) {
-					pages.push(i)
-				}
+				for (let i = this.rangeStart; i <= this.rangeEnd; i++) pages.push(i)
 				return pages
 			},
 			countPage: function() {
-				return Math.ceil(this.count / 10)
+				return Math.ceil(this.options.count / this.options.pageItemsCount)
 			},
 			rangeStart: function() {
 				let start = this.currentPage - this.pageRange
@@ -50,12 +46,12 @@
 		},
 		methods: {
 			nextPage() {
-				if (this.currentPage == 1) return 
+				if (this.currentPage == 1) return
 				this.currentPage--
 				this.$emit('change', this.currentPage)
 			},
 			preventPage() {
-				if (this.currentPage == this.countPage) return 
+				if (this.currentPage == this.countPage) return
 				this.currentPage++
 				this.$emit('change', this.currentPage)
 			},

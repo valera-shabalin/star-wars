@@ -7,29 +7,45 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 	state: {
 		persons: [],
-		favorites: [],
-		count: 0
+		favorites: []
 	},
 	mutations: {
 		SET_PERSONS: (state, persons) => { state.persons = persons },
-		SET_COUNT: (state, count) => { state.count = count },
+		SET_FAVORITE: (state, person) => {
+			state.favorites.push(person)
+			localStorage.setItem('favorites', JSON.stringify(state.favorites))
+		},
+		DELETE_FAVORITE: (state, index) => {
+			state.favorites.splice(index, 1)
+			localStorage.setItem('favorites', JSON.stringify(state.favorites))
+		},
+		INIT_FAVORITES: (state) => { if (JSON.parse(localStorage.getItem('favorites'))) state.favorites = JSON.parse(localStorage.getItem('favorites')) }
 	},
 	actions: {
 		FETCH_PERSONS: ({ commit }, { url }) => {
 			return new Promise((resolve, reject) => {
 				axios.get(url)
-				.then(resp => {
-					if (resp.status == 200) {
-						commit('SET_COUNT', parseInt(resp.data.count))
-						resolve(resp.data.results)
+					.then(resp => {
+						resp.status == 200 ? resolve(resp.data) : reject()
+					})
+					.catch(err => { reject(err) })
+			})
+		},
+		ADD_CARD: ({ commit, state }, person) => {
+			return new Promise((resolve, reject) => {
+				for (let i = 0; i < state.favorites.length; i++) {
+					if (state.favorites[i].url == person.url) {
+						commit('DELETE_FAVORITE', i)
+						return
 					}
-				})
+				}
+				commit('SET_FAVORITE', person)
+				resolve()
 			})
 		}
 	},
 	getters: {
 		PERSONS: (state) => { return state.persons },
-		FAVORITES: (state) => { return state.favorites },
-		COUNT: (state) => { return state.count }
+		FAVORITES: (state) => { return state.favorites }
 	}
 })
