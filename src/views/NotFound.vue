@@ -7,7 +7,7 @@
 					<span class="status">404</span>
 					<div class="light-line"></div>
 					<h1>Страница не найдена!</h1>
-					<DefaultButton :mode="'white'" @click="goBack">Вернуться назад</DefaultButton>
+					<DefaultButton :mode="'white'" @click="$router.go(-1)">Вернуться назад</DefaultButton>
 				</div>
 			</div>
 		</div>
@@ -17,11 +17,6 @@
 <script>
 	export default {
 		name: 'NotFound',
-		methods: {
-			goBack() {
-				this.$router.go(-1)
-			}
-		},
 		components: {
 			Header: () => import('@/components/main/Header')
 		}

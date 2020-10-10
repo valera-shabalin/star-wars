@@ -6,11 +6,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
-		persons: [],
 		favorites: []
 	},
 	mutations: {
-		SET_PERSONS: (state, persons) => { state.persons = persons },
 		SET_FAVORITE: (state, person) => {
 			state.favorites.push(person)
 			localStorage.setItem('favorites', JSON.stringify(state.favorites))
@@ -19,7 +17,10 @@ export default new Vuex.Store({
 			state.favorites.splice(index, 1)
 			localStorage.setItem('favorites', JSON.stringify(state.favorites))
 		},
-		INIT_FAVORITES: (state) => { if (JSON.parse(localStorage.getItem('favorites'))) state.favorites = JSON.parse(localStorage.getItem('favorites')) }
+		INIT_FAVORITES: (state) => { 
+			if (JSON.parse(localStorage.getItem('favorites'))) 
+				state.favorites = JSON.parse(localStorage.getItem('favorites')) 
+		}
 	},
 	actions: {
 		FETCH_PERSONS: ({ commit }, { url }) => {
@@ -45,7 +46,6 @@ export default new Vuex.Store({
 		}
 	},
 	getters: {
-		PERSONS: (state) => { return state.persons },
 		FAVORITES: (state) => { return state.favorites }
 	}
 })

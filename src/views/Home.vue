@@ -34,14 +34,14 @@
 				pageItemsCount: 10
 			}
 		}),
-		created() {
+		mounted() {
 			const url = 'http://swapi.dev/api/people/'
 			this.$store.dispatch('FETCH_PERSONS', { url })
 				.then(resp => {
 					this.persons = resp.results
 					this.pagination.count = resp.count
 				})
-				.catch(err => { alert(err) })
+				.catch(() => {})
 		},
 		methods: {
 			changePage(currentPage) { 
@@ -50,7 +50,7 @@
 					.then(resp => {
 						this.persons = resp.results
 					})
-					.catch(err => { alert(err) })
+					.catch(() => {})
 			}
 		},
 		components: {
