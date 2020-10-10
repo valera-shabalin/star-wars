@@ -42,6 +42,7 @@
 				return list
 			},
 			count() {
+				this.pagination.count = this.persons.length
 				return this.persons.length
 			}
 		},
